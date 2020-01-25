@@ -106,3 +106,28 @@ select coalesce(a, 0) as 'new_col' from sample37;
 ```
 
 </br>
+
+### 데이터의 추가, 삭제, 갱신
+
+```mysql
+-- 행 추가하기
+-- 추가하기 전에 desc을 통해 각 컬럼의 타입을 확인해야 함
+insert into sample41 values(1, 'ABC', '2014-01-25');
+-- 열을 지정해 행 추가하기. 별도 값 지정하지 않은 열에는 null이 저장(not null 제약 있는 경우에는 null 저장 불가). 지정하지 않은 열에는 desc로 확인했을 때 default값이 들어감
+insert into sample41(a, no) values('XYZ', 2);
+
+-- 삭제하기
+-- where구에 지정하지 않으면 모든 행 삭제
+delete from sample41;
+delete from sample41 where no=3;
+
+-- 갱신하기
+-- where구에 지정하지 않으면 테이블의 모든 행 갱신
+update sample41 set a=1
+-- 복수열에 대해 갱신. 이 때 순서는 적혀 있는 순서대로 갱신
+update sample41 set a='KKK', b='2014-04-05' where no=2;
+-- 갱신할 값을 열이 포함된 식으로도 표기할 수 있으며, 해당 열이 갱신 대상이 되는 열이라 해도 상관 없음
+update sample41 set no=no+1;
+
+```
+
