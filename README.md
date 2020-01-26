@@ -131,3 +131,71 @@ update sample41 set no=no+1;
 
 ```
 
+</br>
+
+### 집계와 서브쿼리
+
+집계 함수는 집합을 인자로 하는 함수. Null 값이 있는 경우 이를 제외하고 처리한다. 전체 열(*)을 대상으로 할 경우에는 모든 열에 null이 아닌 이상 최대 개수를 반환한다.
+
+```mysql
+-- count
+-- name이 A인 테이블의 행의 개수
+select count(*) from sample51 where name='A';
+select count(no), count(name) from sample51;
+
+-- 유일한 값만 반환
+select distinct name from sample51;
+select count(name), count(distinct name) from sample51;
+
+-- sum
+select sum(quantity) from sample51;
+
+-- avg
+select avg(quqantity) from samle51;
+-- 만약 null을 0으로 변환해 avg를 계산하고 싶을 경우
+select avg(case when quantity is null then 0 else quantity end) as avgnull0 from sample51;
+
+-- min, max(문자열에서도 적용 가능)
+select min(quantity) as 'min', max(quantiy) as 'max' from sample51;
+
+-- group by
+select name, count(name), sum(quantity) from sample51 group by name;
+-- group by 결과에 where구를 적용할 수 없다. 이 때 having 사용
+-- where -> group by -> having -> select -> order by
+select name, count(name) from sample51 group by name having count(name)=1;
+-- 복수열 지정
+select name, quantity from sample51 group by name, quantity;
+-- 정렬
+select name, count(name), sum(quantity) from sample51 group by name order by sum(quantity) desc;
+
+-- 서브쿼리 : 괄호로 지정
+-- 스칼라 서브쿼리로 되어 있는지 확인해야 함. 스칼라는 하나의 값을 반환하는 것(하나의 행과 하나의 열로 나타나는 하나의 셀)
+-- a가 최솟값을 가지는 행 삭제
+-- 원래는 delete from sample54 where a=(select min(a) from sample54);로 해도 되는데 MySQL에서는 데이터 갱신 시, 동일한 테이블을 서브쿼리에 사용할 수 없기 때문에 아래처럼 활용
+set @a = (select min(a) from sample54);
+delete from sample54 where a=@a;
+-- sample51 행 개수, sample54 행 개수 확인
+select (select count(*) from sample51) as sq1, (select count(*) from sample54) as sq2;
+-- update
+set @a = (select max(a) from sample54);
+update sample54 set a = @a;
+-- 중첩구조. 내포구조
+-- from구에 서브쿼리 붙을 때는 스칼라 아니어도 된다. from 구에서는 테이블이나 서브쿼리에 as로 별칭을 붙여야만 함. sq는 Sub Query의 약자
+select * from (select * from sample54) as sq;
+-- ex)
+select * from (select * from sample54 order by a desc) sq limit 2;
+insert into sample541 values((select count(*) from sample51), (select count(*) from sample54));
+-- value 없이 이렇게도 가능. 헷갈리면 굳이 사용 x
+insert into sample541 select count(*) from sample542;
+
+-- 상관 서브쿼리 : 두 테이블에 걸쳐 조작할 경우
+-- exsits
+-- sample552의 no2에 있는 값이 sample551의 no와 일치하면 sample551의 a를 '있음'으로, 없으면 '없음'으로 변경. 서로 다른 테이블의 컬럼은 테이블.컬럼으로 접근할 수 있음
+update sample551 set a = '있음' where exists (select * from sample552 where sample552.no2 = sample551.no);
+update sample551 set a = '없음' where not exists (select * from sample552 where sample552.no2 = sample551.no);
+-- in을 사용해서 더 간단하게 처리 할 수 있음. 반대는 not in
+update sample551 set a='없음' where no in (select no2 from sample552);
+```
+
+</br>
+
