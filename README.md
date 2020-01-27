@@ -199,3 +199,67 @@ update sample551 set a='없음' where no in (select no2 from sample552);
 
 </br>
 
+### 데이터베이스 객체 작성과 삭제
+
+데이터베이스 객체란 테이블이나 뷰, 인덱스 등 데이터베이스 내에 정의하는 모든 것을 일컫는 말이다. 테이블 안에는 열을 정의할 수 있고, 스키마 안에는 테이블을 정의할 수 있다. 스키마가 다르면 동일한 이름의 테이블이 작성될 수 있다.
+
+```mysql
+-- 테이블 작성. 열 이름, 자료형, 제약 조건 정의
+create table sample62(
+  no integer not null,
+  a varchar(30),
+  b date);
+  
+-- 테이블 삭제
+drop table sample62;
+-- 테이블은 그대로 두고 데이터만 전부 삭제할 경우
+delete from sample62; -- 오래 걸림
+truncate table sample62; -- 더 빠름
+
+-- 테이블 변경. 열 추가/삭제/변경 및 제약 추가/삭제 가능
+-- 열 추가. sample62 테이블에 newcol이라는 이름의 integer 자료형 컬럼 추가
+alter table sample62 add newcol integer;
+-- 열 속성 변경. sample62 테이블에 newcol 컬럼 자료형 변경
+alter table sample62 modify newcol varchar(20);
+-- 열 이름 변경. 자료형도 꼭 같이 기입해야 한다. change는 열 속성도 변경 가능
+alter table sample62 change newcol c varchar(20);
+-- 열 삭제
+alter table sample62 drop c;
+
+-- 제약
+-- b열에 대해 not null과 unique 제약을 걸어 둠
+create table sample531(
+  no integer not null.
+  sub_no integer not null, unique,
+  name varchar(30),
+  -- 기본키 제약 시, 복수 열에 가능하며, 제약에 이름을 걸기 위해 constraint사용
+  constraint pkey_sample primary key(no, sub_no)
+);
+-- 테이블 제약 추가(테이블 제약 == 기본키(primary key) 제약)
+alter table sample631 add constraint pkey_sample631 primary key(a);
+-- 열 제약 삭제
+alter table sample631 modify c varchar(30);
+-- 테이블 제약 삭제
+alter table sample631 drop constraint pkey_sample631;
+alter table smaple631 drop primary key; -- 결국 테이블 당 p.k는 하나일테니 위와 동일하게 작동
+
+-- 인덱스
+-- 인덱스의 역할은 검색 속도의 향상이다. 테이블과는 별개로 독립된 데이터베이스 객체로 작성된다. 데이터베이스의 인덱스에 쓰이는 대표적인 검색 알고리즘은 이진 트리와 해시다. 하지만 where구의 조건식에 인덱스로 해당된 열이 전혀 사용되지 않으면 select명령은 인덱스를 사용할 수 없다.
+-- 인덱스 작성
+create index isample65 on sample62(no);
+-- 인덱스 삭제
+drop index isampe65 on sample62;
+-- explain으로 인덱스 사용 확인하기
+explain select * from sample62 where a='a';
+
+-- 뷰 : 테이블과 같은 부류의 데이터베이스 객체. select 명령을 기록하는 데이터베이스 객체. 그러니까 실제 파일은 없는데 메모리 상에만 있는 테이블이다 이거지?
+-- 뷰 작성
+create view sample_view_67 as select * from sample54;
+-- 열을 지정해 뷰 작성
+create view sample_view_672(n, v, v2) as select no, a, a*2 from sample54;
+-- 뷰 삭제
+drop view sample_view_67;
+```
+
+</br>
+
