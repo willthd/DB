@@ -263,3 +263,26 @@ drop view sample_view_67;
 
 </br>
 
+### 복수의 테이블 다루기
+
+```mysql
+-- 합집합 구하기
+select * from sample71_a union select * from sample71_b;
+-- 합집합에 order by 지정할 땐 각각 지정하는게 아니라 각각 동일한 이름으로 지정하고 통합으로 적용
+select a as c form sample71_a union select b as c from sample71_b order by c;
+-- 중복되는 경우도 모두 다 합치기(합집합은 중복되는 경우 하나로 표현. concat 처럼)
+select * from sample71_a union all select * from sample71_b;
+
+-- 곱집합(교차결합)
+select * from sample72_x, sample72_y;
+select * from sample72_x cross join sample72_y;
+
+-- 내부결합
+select product.name, jaego_n.jaego_n from product inner join jaego_n on product.code = jageo_n.code where product.category = '식료품';
+-- 별명 붙여 내부 결합(실제로 s, m 테이블은 존재 하지 않음)
+select s.상품명, m.메이커명 from 상품2 inner join 메이커 m on s.메이커코드 = m.메이커코드;
+
+-- 외부결합(left join, right join)
+select 상품3.상품명, 재고수.재고수 from 상품3 left join 재고수 on 상품3.상품코드 = 재고수.상품코드 where 상품3.상품분류 = '식료품';
+```
+
