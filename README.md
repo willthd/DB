@@ -310,3 +310,4 @@ select 상품3.상품명, 재고수.재고수 from 상품3 left join 재고수 o
   ```
 
   
+
