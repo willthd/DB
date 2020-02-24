@@ -163,6 +163,8 @@ select name, count(name), sum(quantity) from sample51 group by name;
 -- group by 결과에 where구를 적용할 수 없다. 이 때 having 사용
 -- where -> group by -> having -> select -> order by
 select name, count(name) from sample51 group by name having count(name)=1;
+-- 아래는 위와 동일하지 않나? 문법적으로는 문제 없음
+select name, count(name) from sample51 where count(name) = 1 group by name
 -- 복수열 지정
 select name, quantity from sample51 group by name, quantity;
 -- 정렬
