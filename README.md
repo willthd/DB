@@ -101,8 +101,9 @@ select datediff('2014-02-28', '2014-01-01');
 -- case 조건문. else를 생략하면 조건문에 해당하지 않는 것들은 모두 null이 되기 때문에 지정하는 편이 좋음. end 가장 마지막에 있는 것 주의
 select a as code, case when a=1 then 'man' when a=2 then 'woman' else 'unknown' end as 'sex' from sample37;
 
--- coalesce. a가 null인 경우 0으로 대체
+-- coalesce. a가 null인 경우 0으로 대체. coalesce는 ifnull과 동일
 select coalesce(a, 0) as 'new_col' from sample37;
+select ifnull(a, 0) as 'new_col' from sample37;
 ```
 
 </br>
