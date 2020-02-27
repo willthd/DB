@@ -98,6 +98,10 @@ select str_to_date('2014-01-05', '%Y-%m-%d');
 -- 날짜 뺄셈
 select datediff('2014-02-28', '2014-01-01');
 
+-- 원하는 부분만 추출. 기존 datetime은 %Y-%m-%d %h:%m:%s 형태
+-- 연, 월, 일만 추출
+select animal_id, name, date_format(datetime, '%Y-%m-%d') as date
+
 -- case 조건문. else를 생략하면 조건문에 해당하지 않는 것들은 모두 null이 되기 때문에 지정하는 편이 좋음. end 가장 마지막에 있는 것 주의
 select a as code,
 case
