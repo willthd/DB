@@ -24,8 +24,9 @@ select a, b from sample21;
 -- 특정 열 a,b와 행 no가 2 또는 5인 행(and, or, not 모두 가능. 괄호 주의해서 사용)
 select a, b from sample21 where no=2 or no=5;
 
--- 특정 열 a,b와 no가 2가 아닌 행
-select a, b from sample21 where no<>2;
+-- 특정 열 a,b와 no가 2가 아닌 행. <>와 != 동일
+select a, b from sample21 where no <> 2;
+select a, b from sample21 where no != 2;
 
 -- null검색
 select * from sample21 where birthday is null;
