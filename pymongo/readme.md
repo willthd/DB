@@ -1,5 +1,7 @@
 # PyMongo
 
+> python에서 MongoDB와 연동할 때 사용한다.
+
 </br>
 
 ### MongoDB 접속
