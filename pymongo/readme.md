@@ -1,6 +1,10 @@
 # PyMongo
 
-> python에서 MongoDB와 연동할 때 사용한다.
+> python에서 MongoDB와 연동할 때 사용한다. JSON 형태의 Document 기반 관리
+
+</br>
+
+![sqlnosql](./sqlnosql.png)
 
 </br>
 
@@ -20,7 +24,7 @@ client = MongoClient('mongodb://username:password@12.234.234.123:port/something'
 # db 선택
 db = client['chatbot']
 
-# collection 선택
+# collection 선택(RDBMS의 table)
 collection = mongo_db['chatbot_log']
 
 # collection 이름 확인
