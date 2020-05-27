@@ -43,6 +43,8 @@ curs.execute(sql, ('홍길동', 1, '서울'))
 curs.execute(sql, ('이연수', 2, '서울'))
 # commit을 통해 DB 상태 변경 후 저장
 conn.commit()
+# 여러 개 한번에 집어 넣을 때
+c.executemany("insert into T (F1,F2) values (%s, %s)", [('a','b'),('c','d')])
 
 # ==== update =====
 sql = "update customer set region = '서울특별시' where region = '서울'"
